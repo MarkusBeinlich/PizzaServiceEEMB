@@ -6,6 +6,8 @@
 package de.beinlich.markus.pizzaservice.test;
 
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.importer.ZipImporter;
@@ -18,7 +20,10 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 public abstract class AbstractItCase {
     @Deployment(testable = false)
     public static WebArchive createDeployment() {
-        return ShrinkWrap.create(ZipImporter.class, "test.war").importFrom(new File("target/PizzaServiceEEMB-1.0-SNAPSHOT.war")).as(WebArchive.class);
+        WebArchive webArchive;
+        System.out.println("createDeploymentMB2");
+        webArchive =  ShrinkWrap.create(ZipImporter.class, "test.war").importFrom(new File("target/PizzaServiceEEMB-1.0-SNAPSHOT.war")).as(WebArchive.class);
+        return webArchive;
     }
     
 }

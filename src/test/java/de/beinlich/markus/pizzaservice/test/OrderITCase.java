@@ -6,6 +6,7 @@
 package de.beinlich.markus.pizzaservice.test;
 
 import de.beinlich.markus.pizzaservice.test.pages.MenuPage;
+import de.beinlich.markus.pizzaservice.test.pages.CustomerPage;
 import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.graphene.page.InitialPage;
 import org.jboss.arquillian.graphene.page.Page;
@@ -22,11 +23,15 @@ import org.openqa.selenium.WebDriver;
 public class OrderITCase extends AbstractItCase{
     @Drone
     private WebDriver browser;
-
+    @Page
+    private CustomerPage customerPage;
 
     @Test
     public void testAddOrder(@InitialPage MenuPage menuPage){
+        System.out.println("testAddOrderMB");
         menuPage.assertOnPage();
         menuPage.doInput();
+        menuPage.doOrder();
+        customerPage.assertOnPage();
     }
 }

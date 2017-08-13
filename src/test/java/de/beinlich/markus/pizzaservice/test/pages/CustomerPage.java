@@ -16,15 +16,20 @@ import org.openqa.selenium.support.FindBy;
  *
  * @author Markus
  */
-@Location("menu.xhtml")
-public class MenuPage extends AbstractPage {
+@Location("customer.xhtml")
+public class CustomerPage extends AbstractPage {
 
 //    @FindBy(xpath = "//tbody/tr[1]/td[4]")
     @FindBy(id = "j_idt34:j_idt35:0:quantity_input")
     private WebElement quantityInput0;
 
     public void assertOnPage() {
-        assertTitle("menu");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(CustomerPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        assertTitle("customerHeader");
     }
 
     public void doInput() {
@@ -33,7 +38,7 @@ public class MenuPage extends AbstractPage {
     }
     
     public void doOrder() {
-        WebElement orderButton = getButtonById("j_idt34:orderButton");
-        Graphene.guardAjax(orderButton).click();
+        WebElement orderButton = getButtonByLabel("customerButtonNext");
+        Graphene.guardHttp(orderButton).click();
     }
 }
