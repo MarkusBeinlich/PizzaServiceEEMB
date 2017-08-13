@@ -355,8 +355,10 @@ public class OrderPizza implements Serializable {
         if (customerDb != null) {
             this.customer = customerDb;
             System.out.println("customerDb <> null");
-        }
         System.out.println("getCustomer:" + request.getUserPrincipal().getName() + " - " + customer.getLastName() + " - " + customer.getOrderHeaders().size());
+         } else {
+            System.out.println("Customer not found: "+ request.getUserPrincipal().getName());
+        }
         return customer;
     }
 

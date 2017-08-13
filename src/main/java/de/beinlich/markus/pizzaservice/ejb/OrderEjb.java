@@ -35,8 +35,8 @@ public class OrderEjb implements OrderEjbInterface {
 //            EntityManager em = emf.createEntityManager();
 //            em.persist(order.getCustomer());
 //            em.persist(order.getCustomer());
-//            order = em.merge(order);
-em.persist(order);
+            order = em.merge(order);
+//em.persist(order);
 //            Customer customer;
 //            customer = order.getCustomer();
 //            em.persist(customer);
