@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jboss.arquillian.graphene.Graphene;
 import org.jboss.arquillian.graphene.page.Location;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -29,15 +30,15 @@ public class MenuPage extends AbstractPage {
 
     public void doInput() {
         quantityInput0.sendKeys("1");
-        quantityInput0.click();
+        quantityInput0.sendKeys(Keys.TAB);
     }
     
     public void doOrder() {
-        WebElement orderButton = getButtonById("j_idt34:orderButton");
-        System.out.println("orderButton: " + orderButton.getText());
-//        orderButton.click();
-//        Graphene.guardHttp(orderButton).click();
-        Graphene.guardAjax(orderButton).click();
-        System.out.println("after orderButton1");
+        WebElement orderButton = getElementById("j_idt34:orderButton");
+        System.out.println("orderButton2: " + orderButton.getText());
+//        orderButton.submit();
+        Graphene.guardHttp(orderButton).click();
+//        Graphene.guardAjax(orderButton).click();
+        System.out.println("after orderButton2");
     }
 }

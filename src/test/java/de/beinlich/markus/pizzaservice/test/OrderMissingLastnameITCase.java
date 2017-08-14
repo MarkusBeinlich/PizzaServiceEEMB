@@ -21,24 +21,24 @@ import org.openqa.selenium.WebDriver;
  * @author Markus
  */
 @RunWith(Arquillian.class)
-public class OrderITCase extends AbstractItCase{
+public class OrderMissingLastnameITCase extends AbstractItCase{
     @Drone
     private WebDriver browser;
     @Page
     private CustomerPage customerPage;
     @Page
     private ConfirmationPage confirmationPage;
-    
+
     @Test
-    public void testAddOrder(@InitialPage MenuPage menuPage){
-        System.out.println("testAddOrderMB");
+    public void testAddOrderMissingLastname(@InitialPage MenuPage menuPage){
+        System.out.println("testAddOrderMissingLastname");
         menuPage.assertOnPage();
         menuPage.doInput();
         menuPage.doOrder();
         customerPage.assertOnPage();
-        customerPage.doInput();
+        customerPage.doInputFirstName();
         customerPage.doCustomerEntered();
-        confirmationPage.assertOnPage();
-        confirmationPage.doConfirmation();
+        customerPage.assertMissingLastname();
     }
+    
 }

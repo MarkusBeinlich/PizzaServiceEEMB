@@ -62,7 +62,8 @@
                             <p:message for="inPostcode" />
                         </p:panelGrid>
                         <br/>
-                        <p:commandButton action="#{orderPizza.customerEntered()}" value="#{msg.customerButtonNext}" update="customerGrid" />
+                        <p:commandButton action="#{orderPizza.customerEntered()}" value="#{msg.customerButtonNext}" 
+                                         ajax = "false" update="customerGrid" />
                     </h:form>
                 </ui:define>
             </ui:composition>

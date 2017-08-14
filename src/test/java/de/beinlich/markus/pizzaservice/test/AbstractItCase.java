@@ -6,12 +6,11 @@
 package de.beinlich.markus.pizzaservice.test;
 
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.importer.ZipImporter;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+
 
 /**
  *

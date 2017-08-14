@@ -38,7 +38,8 @@ public abstract class AbstractPage {
         return browser.findElement(By.xpath("//button/span[text()='" + getString(label) + "']"));
     }
 
-    protected WebElement getButtonById(String id) {
+    protected WebElement getElementById(String id) {
         return browser.findElement(By.id(id));
     }
+    
 }

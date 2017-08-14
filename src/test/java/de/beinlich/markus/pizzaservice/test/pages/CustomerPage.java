@@ -7,6 +7,7 @@ package de.beinlich.markus.pizzaservice.test.pages;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static junit.framework.Assert.assertEquals;
 import org.jboss.arquillian.graphene.Graphene;
 import org.jboss.arquillian.graphene.page.Location;
 import org.openqa.selenium.WebElement;
@@ -20,27 +21,48 @@ import org.openqa.selenium.support.FindBy;
 public class CustomerPage extends AbstractPage {
 
 //    @FindBy(xpath = "//tbody/tr[1]/td[4]")
-    @FindBy(id = "j_idt34:j_idt35:0:quantity_input")
-    private WebElement quantityInput0;
+    @FindBy(id = "j_idt34:inFirstName")
+    private WebElement firstName;
+    @FindBy(id = "j_idt34:inLastName")
+    private WebElement lastName;
+    @FindBy(id = "j_idt34:inEmail")
+    private WebElement email;
+    @FindBy(id = "j_idt34:inPhone")
+    private WebElement phone;
+    @FindBy(id = "j_idt34:inStreet")
+    private WebElement street;
+    @FindBy(id = "j_idt34:inTown")
+    private WebElement town;
+    @FindBy(id = "j_idt34:inPostcode")
+    private WebElement postcode;
 
     public void assertOnPage() {
-        System.out.println("CustomerPage assertOnPage");
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(CustomerPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         assertTitle("customerHeader");
         System.out.println("CustomerPage assertOnPage End");
     }
 
-    public void doInput() {
-        quantityInput0.sendKeys("1");
-        quantityInput0.click();
+    public void doInputFirstName() {
+        firstName.sendKeys("Markus");
     }
-    
-    public void doOrder() {
-        WebElement orderButton = getButtonByLabel("customerButtonNext");
-        Graphene.guardHttp(orderButton).click();
+
+    public void doInput() {
+        firstName.sendKeys("Markus");
+        lastName.sendKeys("Beinlich");
+        email.sendKeys("markus@beinlich");
+        phone.sendKeys("089-12345");
+        street.sendKeys("Dorfstr. 11");
+        town.sendKeys("München");
+        postcode.sendKeys("80123");
+    }
+
+    public void assertMissingLastname() {
+        WebElement missingLastname = getElementById("j_idt34:j_idt38");
+        assertEquals("Nachname ist ein Pflichtfeld.", missingLastname.getText());
+    }
+
+    public void doCustomerEntered() {
+        WebElement nextButton = getButtonByLabel("customerButtonNext");
+        Graphene.guardHttp(nextButton).click();
     }
 }

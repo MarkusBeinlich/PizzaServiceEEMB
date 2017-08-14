@@ -22,6 +22,13 @@
             <type>jar</type>
         </dependency>
         <dependency>
+            <groupId>org.jboss.arquillian.container</groupId>
+            <artifactId>arquillian-container-test-api</artifactId>
+            <version>1.1.2.Final</version>
+            <scope>test</scope>
+            <type>jar</type>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
@@ -54,7 +61,7 @@
         <!-- https://mvnrepository.com/artifact/org.wildfly/wildfly-arquillian-container-remote -->
         <dependency>
             <groupId>org.wildfly</groupId>
-            <artifactId>wildfly-arquillian-container-remote</artifactId>
+            <artifactId>wildfly-arquillian-container-remote</artifactId> 
             <version>8.1.0.Final</version>
             <scope>test</scope>
         </dependency>
