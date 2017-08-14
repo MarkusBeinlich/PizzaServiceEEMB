@@ -24,12 +24,14 @@ public class CustomerPage extends AbstractPage {
     private WebElement quantityInput0;
 
     public void assertOnPage() {
+        System.out.println("CustomerPage assertOnPage");
         try {
-            Thread.sleep(2000);
+            Thread.sleep(5000);
         } catch (InterruptedException ex) {
             Logger.getLogger(CustomerPage.class.getName()).log(Level.SEVERE, null, ex);
         }
         assertTitle("customerHeader");
+        System.out.println("CustomerPage assertOnPage End");
     }
 
     public void doInput() {

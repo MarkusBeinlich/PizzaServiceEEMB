@@ -84,7 +84,7 @@
                         </p:dataTable>
                         <br/>
                         <p:commandButton action="#{orderPizza.startOrder()}" value="#{msg.menuOrder}"
-                                         id="orderButton"
+                                         id="orderButton" ajax="false"
                                          disabled="#{orderPizza.order.orderEntriesAsCollection.isEmpty()}"/>
                     </h:form>
                 </ui:define>

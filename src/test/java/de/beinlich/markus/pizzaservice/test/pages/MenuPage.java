@@ -34,6 +34,10 @@ public class MenuPage extends AbstractPage {
     
     public void doOrder() {
         WebElement orderButton = getButtonById("j_idt34:orderButton");
+        System.out.println("orderButton: " + orderButton.getText());
+//        orderButton.click();
+//        Graphene.guardHttp(orderButton).click();
         Graphene.guardAjax(orderButton).click();
+        System.out.println("after orderButton1");
     }
 }
