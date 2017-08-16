@@ -25,7 +25,7 @@ public class LoginForm {
      @FindBy(xpath = "//input[contains(@id,'password')]")
     private WebElement password;
 
-     @FindBy(xpath = "//div[contains(@id,'username')]")
+     @FindBy(xpath = "//button[contains(@id,'loginButton')]")
     private WebElement loginButton;
     
     public void login(String userName, String password) {

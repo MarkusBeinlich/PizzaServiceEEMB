@@ -56,7 +56,7 @@
                             <p:password id="password" value="#{signinController.cust.password}" required="true" label="password" />
 
                             <f:facet name="footer">
-                                <p:commandButton value="Login" update="messages headerMenu" actionListener="#{signinController.login()}"
+                                <p:commandButton id= "loginButton" value="Login" update="messages headerMenu" actionListener="#{signinController.login()}"
                                                  oncomplete="handleLoginRequest(xhr, status, args)" ajax="false">
                                 </p:commandButton>
                             </f:facet>  

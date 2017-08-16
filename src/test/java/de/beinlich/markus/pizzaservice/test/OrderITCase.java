@@ -8,6 +8,8 @@ package de.beinlich.markus.pizzaservice.test;
 import de.beinlich.markus.pizzaservice.test.pages.ConfirmationPage;
 import de.beinlich.markus.pizzaservice.test.pages.MenuPage;
 import de.beinlich.markus.pizzaservice.test.pages.CustomerPage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.graphene.page.InitialPage;
 import org.jboss.arquillian.graphene.page.Page;
@@ -36,10 +38,15 @@ public class OrderITCase extends AbstractItCase{
         menuPage.getLoginForm().login("markus.beinlich@gmx.de", "secure");
         menuPage.doInput();
         menuPage.doOrder();
-        customerPage.assertOnPage();
-        customerPage.doInput();
-        customerPage.doCustomerEntered();
+//        customerPage.assertOnPage();
+//        customerPage.doInput();
+//        customerPage.doCustomerEntered();
         confirmationPage.assertOnPage();
         confirmationPage.doConfirmation();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(OrderITCase.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
