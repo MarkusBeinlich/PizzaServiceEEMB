@@ -33,6 +33,7 @@ public class OrderITCase extends AbstractItCase{
     public void testAddOrder(@InitialPage MenuPage menuPage){
         System.out.println("testAddOrderMB");
         menuPage.assertOnPage();
+        menuPage.getLoginForm().login("markus.beinlich@gmx.de", "secure");
         menuPage.doInput();
         menuPage.doOrder();
         customerPage.assertOnPage();

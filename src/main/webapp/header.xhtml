@@ -37,13 +37,17 @@
 
                 <p:menuitem value="Hello #{signinController.username}" rendered="#{signinController.loggedIn}" url="#" />
                 <f:facet name="options" rendered="true">
+                    <p:commandButton value="Logout1" icon="ui-icon-extlink" rendered="#{signinController.loggedIn}"
+                                     action="#{signinController.logout()}"
+                                     immediate="true"
+                                     ajax="false"/>
                     <h:outputLink value="javascript:void(0)" onclick="PF('dlg').show();" title="login" rendered="#{not signinController.loggedIn}">
                         <h:outputText value="Login" />
                     </h:outputLink>
 
                     <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
 
-                    <p:dialog header="Login" widgetVar="dlg" resizable="false">
+                    <p:dialog id= "loginDialog" header="Login" widgetVar="dlg" resizable="false">
                         <h:panelGrid columns="2" cellpadding="5">
                             <h:outputLabel for="username" value="Username:" />
                             <p:inputText id="username" value="#{signinController.cust.email}" required="true" label="username" />
@@ -60,7 +64,6 @@
                     </p:dialog>
                 </f:facet>
             </p:menubar>
-
             #{msg.templateHeader} 
         </h:form>
     </h:body>

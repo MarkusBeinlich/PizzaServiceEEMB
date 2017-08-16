@@ -9,6 +9,10 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import static junit.framework.Assert.assertEquals;
 import org.jboss.arquillian.drone.api.annotation.Drone;
+import org.jboss.arquillian.graphene.Graphene;
+import static org.jboss.arquillian.graphene.Graphene.guardAjax;
+import static org.jboss.arquillian.graphene.Graphene.guardHttp;
+import static org.jboss.arquillian.graphene.Graphene.guardNoRequest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -26,6 +30,12 @@ public abstract class AbstractPage {
     @FindBy(xpath = "//h2")
     private WebElement title;
 
+    @FindBy(xpath = "//div[contains(@id,'loginDialog')]")
+    private LoginForm loginForm;
+
+    @FindBy(xpath = "//a[contains(@title,'login')]")
+    private WebElement loginLink;
+
     private String getString(String key) {
         return ResourceBundle.getBundle("messages", Locale.GERMANY).getString(key);
     }
@@ -41,5 +51,10 @@ public abstract class AbstractPage {
     protected WebElement getElementById(String id) {
         return browser.findElement(By.id(id));
     }
-    
+
+    public LoginForm getLoginForm() {   // we can either manipulate with the login form or just expose it
+        guardNoRequest(loginLink).click();
+        return loginForm;
+    }
+
 }

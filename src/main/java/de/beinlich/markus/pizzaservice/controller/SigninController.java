@@ -6,12 +6,14 @@
 package de.beinlich.markus.pizzaservice.controller;
 
 import de.beinlich.markus.pizzaservice.model.CustomerReg;
+import java.io.IOException;
 
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.event.Event;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -101,7 +103,7 @@ public class SigninController implements Serializable {
             username = cust.getEmail();
             loginEvent.fire(new LoginEvent(username));
             facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", cust.getEmail());
-            
+
         } catch (ServletException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -129,4 +131,14 @@ public class SigninController implements Serializable {
         this.username = username;
     }
 
+    public void logout() {
+        System.out.println("logout");
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.invalidateSession();
+        try {
+            ec.redirect(ec.getRequestContextPath() + "/");
+        } catch (IOException ex) {
+            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

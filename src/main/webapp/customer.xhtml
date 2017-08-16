@@ -29,7 +29,7 @@
                                          converter="trimconverter" requiredMessage="Nachname ist ein Pflichtfeld.">
                                 <f:validateLength minimum="2" maximum="50"/>
                             </p:inputText>
-                            <p:message for="inLastName" />
+                            <p:message for="inLastName" id="messageLastName"/>
                             <p:outputLabel for="inEmail" value="#{msg.customerEmail}" />    
                             <p:inputText id="inEmail" value="#{orderPizza.customer.email}" required="true"
                                          requiredMessage="Email ist ein Pflichtfeld." validatorMessage="Email muß ein @-Zeichen enthalten."> 

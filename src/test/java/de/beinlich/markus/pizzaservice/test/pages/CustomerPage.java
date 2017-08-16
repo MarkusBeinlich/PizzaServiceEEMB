@@ -21,20 +21,22 @@ import org.openqa.selenium.support.FindBy;
 public class CustomerPage extends AbstractPage {
 
 //    @FindBy(xpath = "//tbody/tr[1]/td[4]")
-    @FindBy(id = "j_idt34:inFirstName")
+    @FindBy(xpath = "//input[contains(@id,'inFirstName')]")
     private WebElement firstName;
-    @FindBy(id = "j_idt34:inLastName")
+    @FindBy(xpath = "//input[contains(@id,'inLastName')]")
     private WebElement lastName;
-    @FindBy(id = "j_idt34:inEmail")
+    @FindBy(xpath = "//input[contains(@id,'inEmail')]")
     private WebElement email;
-    @FindBy(id = "j_idt34:inPhone")
+    @FindBy(xpath = "//input[contains(@id,'inPhone')]")
     private WebElement phone;
-    @FindBy(id = "j_idt34:inStreet")
+    @FindBy(xpath = "//input[contains(@id,'inStreet')]")
     private WebElement street;
-    @FindBy(id = "j_idt34:inTown")
+    @FindBy(xpath = "//input[contains(@id,'inTown')]")
     private WebElement town;
-    @FindBy(id = "j_idt34:inPostcode")
+    @FindBy(xpath = "//input[contains(@id,'inPostcode')]")
     private WebElement postcode;
+    @FindBy(xpath = "//div[contains(@id,'messageLastName')]")
+    private WebElement messageLastName;
 
     public void assertOnPage() {
 
@@ -57,11 +59,12 @@ public class CustomerPage extends AbstractPage {
     }
 
     public void assertMissingLastname() {
-        WebElement missingLastname = getElementById("j_idt34:j_idt38");
-        assertEquals("Nachname ist ein Pflichtfeld.", missingLastname.getText());
+        System.out.println("assertMissingLastname");
+        assertEquals("Nachname ist ein Pflichtfeld.", messageLastName.getText());
     }
 
     public void doCustomerEntered() {
+        System.out.println("doCustomerEntered");
         WebElement nextButton = getButtonByLabel("customerButtonNext");
         Graphene.guardHttp(nextButton).click();
     }
