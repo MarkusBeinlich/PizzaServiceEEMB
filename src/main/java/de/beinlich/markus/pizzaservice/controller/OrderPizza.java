@@ -28,6 +28,14 @@ import org.primefaces.context.RequestContext;
 import de.beinlich.markus.pizzaservice.ejb.CustomerEjbInterface;
 import de.beinlich.markus.pizzaservice.ejb.MenuEjbInterface;
 import de.beinlich.markus.pizzaservice.ejb.OrderEjbInterface;
+import de.beinlich.markus.pizzaservice.model.OrderAmountToHighException;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.ResourceBundle;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -51,7 +59,6 @@ public class OrderPizza implements Serializable {
 //    private final OrderEjbRemote orderEjb = lookupOrderEjbRemote();
 //
 //    private final MenuEjbRemote menuEjb = lookupMenuEjbRemote();
-
     private static final long serialVersionUID = 4711892445353241012L;
 
     private Customer customer;
@@ -180,7 +187,6 @@ public class OrderPizza implements Serializable {
 //            throw new RuntimeException(ne);
 //        }
 //    }
-
     // DAs geht leider nicht, da das Event ja in einer anderen JVM ausgeführt wird
 //    public void getNewOrderHeader(@Observes OrderEvent orderEvent) {
 //        System.out.println("getNewOrderHeader - OrderPizza");
@@ -205,7 +211,8 @@ public class OrderPizza implements Serializable {
 
         this.save();
         submitted = true;
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Vielen Dank für Ihre Bestellung", "Guten Appetit.");
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ResourceBundle.getBundle("messages").getString("confirmationThankYou"),
+                ResourceBundle.getBundle("messages").getString("confirmationEnjoyYourMeal"));
         RequestContext.getCurrentInstance().showMessageInDialog(message);
     }
 //    @Inject
@@ -227,32 +234,56 @@ public class OrderPizza implements Serializable {
 //        }
 //
 //    }
-    
+
     public void save() {
         orderEjb.saveOrder(order);
     }
 
-    public void showPdf() {
-        try {
-//            RequestContext.getCurrentInstance().getApplicationContext().
-//            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-            System.out.println("showPdf context: " + context);
-            context.redirect("generate/myPdf.pdf");
-        } catch (IOException ex) {
-            Logger.getLogger(OrderPizza.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private StreamedContent pdf;
+
+    public StreamedContent getPdf() {
+        order.setCustomer(customer);
+        InputStream stream = new ByteArrayInputStream(this.order.createPdf().toByteArray());
+        pdf = new DefaultStreamedContent(stream, "application/pdf", "order.pdf");
+        return pdf;
     }
 
-    public void addOrderEntry() {
-        System.out.println("addOrderEntry" + menu.getMenuItems().size());
-        order.getOrderEntries().clear();
-        for (MenuItem menuItem : menu.getMenuItems()) {
-            if (menuItem.getQuantity() != 0) {
-                order.addOrderEntry(new OrderEntry(menuItem));
-                System.out.println("MenuItem <> 0:" + menuItem.getName());
-            }
+    public void showPdf() {
+        FacesContext faces = FacesContext.getCurrentInstance();
+        HttpServletResponse response = (HttpServletResponse) faces.getExternalContext().getResponse();
+        // Init servlet response.
+        response.reset();
+//        response.setContentType("application/pdf");
+        response.setHeader("Content-Type", "application/pdf");
+        response.setHeader("Content-Disposition", "filename=mypdf.pdf");
+        try {
+            ServletOutputStream out = response.getOutputStream();
+            order.setCustomer(customer);
+            out.write(this.order.createPdf().toByteArray());
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            System.out.println("Fehler: Attachment anzeigen: " + e);
         }
+
+        faces.responseComplete();
+    }
+
+    public void addOrderEntries() {
+        System.out.println("addOrderEntries" + menu.getMenuItems().size());
+            try {
+                order.addOrderEntries(menu.getMenuItems());
+            } catch (OrderAmountToHighException ex) {
+                FacesContext.getCurrentInstance()
+                        .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), "Order Amount is:" + order.getAmount().toPlainString()));
+                Logger.getLogger(OrderPizza.class.getName()).log(Level.SEVERE, null, ex);
+
+            }
+
+    }
+    
+    public boolean orderIsValid() {
+        return order.isValid();
     }
 
     @Inject
@@ -266,12 +297,14 @@ public class OrderPizza implements Serializable {
 
     public String startOrder() {
         System.out.println("startOrder");
-        if (customer.getEmail() == null) {
-            orderStatus = OrderStatus.CUSTOMER;
-            return "toCustomer";
-        } else {
+        if (customer.hasEmail()) {
             orderStatus = OrderStatus.CONFIRMATION;
+            System.out.println("toConfirmation");
             return "toConfirmation";
+        } else {
+            orderStatus = OrderStatus.CUSTOMER;
+            System.out.println("toCustomer");
+            return "toCustomer";
         }
 
     }
@@ -355,9 +388,9 @@ public class OrderPizza implements Serializable {
         if (customerDb != null) {
             this.customer = customerDb;
             System.out.println("customerDb <> null");
-        System.out.println("getCustomer:" + request.getUserPrincipal().getName() + " - " + customer.getLastName() + " - " + customer.getOrderHeaders().size());
-         } else {
-            System.out.println("Customer not found: "+ request.getUserPrincipal().getName());
+            System.out.println("getCustomer:" + request.getUserPrincipal().getName() + " - " + customer.getLastName() + " - " + customer.getOrderHeaders().size());
+        } else {
+            System.out.println("Customer not found: " + request.getUserPrincipal().getName());
         }
         return customer;
     }

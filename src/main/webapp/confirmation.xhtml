@@ -68,11 +68,9 @@
                                 </f:facet>
                             </p:column>
                         </p:dataTable>
-                        <p:outputLabel value="#{msg.confirmationPdfLabel}" />
-                        <p:commandButton action="#{orderPizza.showPdf()}" 
-                                         value="#{msg.confirmationPdfButtonLabel}" />
+
                         <br />
-                        <p:outputLabel value="#{msg.confirmationSubmitted}" rendered="#{orderPizza.submitted}" />
+
                         <h:panelGroup id="submitted">
                             <p:outputLabel value="#{msg.confirmationSubmitOrderLabel}" 
                                            rendered="#{!orderPizza.submitted}" />
@@ -80,7 +78,17 @@
                             <p:commandButton actionListener="#{orderPizza.submitOrder()}" 
                                              value="#{msg.confirmationSubmitOrder}" 
                                              rendered="#{!orderPizza.submitted}" 
-                                             update="submitted"/>
+                                             ajax = "false"/>
+                            <p:outputLabel value="#{msg.confirmationPdfLabel}" rendered="#{orderPizza.submitted}" for="showPdf"/>
+                            <p:commandButton id= "showPdf" action="#{orderPizza.showPdf()}" rendered="#{orderPizza.submitted}"
+                                             ajax = "false"
+                                             onclick="this.form.target = '_blank'" 
+                                             value="#{msg.confirmationPdfButtonLabel}" />
+                            <br />
+                            <p:commandButton id= "newOrder" action="#{signinController.logout()}" rendered="#{orderPizza.submitted}"
+                                             ajax = "false"
+                                             value="#{msg.confirmationNewOrder}" />
+                            <br />
                             <p:outputLabel value="#{msg.confirmationSubmitted}" rendered="#{orderPizza.submitted}" />
                         </h:panelGroup>
                     </h:form>

@@ -65,7 +65,7 @@ public class SigninController implements Serializable {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         System.out.println("isLogin as Admin:" + request.isUserInRole("admin")
                 + RequestContext.getCurrentInstance().getCallbackParams().get("loggedIn"));
-        return request.isUserInRole("admin") || request.isUserInRole("customer");
+        return request.isUserInRole("admin") || request.isUserInRole("customerGroup");
     }
 
     public boolean isAdmin() {

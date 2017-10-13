@@ -14,6 +14,7 @@
                     <h2>#{msg.menu}</h2> 
 
                     <h:form>
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                         <p:dataTable value="#{orderPizza.menu.menuItems}" var="menuItem">
 
                             <p:column>
@@ -42,7 +43,7 @@
                                 </f:facet>
                                 <p:inputNumber id="quantity" value="#{menuItem.quantity}" 
                                                minValue="0" maxValue="10" placeholder="Max. 10">
-                                    <p:ajax update=":#{p:component('order')} :#{p:component('orderButton')}" listener="#{orderPizza.addOrderEntry()}" /> 
+                                    <p:ajax update=":#{p:component('order')} :#{p:component('orderButton')}" listener="#{orderPizza.addOrderEntries()}" /> 
                                 </p:inputNumber>
                             </p:column>
                         </p:dataTable>
@@ -85,7 +86,7 @@
                         <br/>
                         <p:commandButton action="#{orderPizza.startOrder()}" value="#{msg.menuOrder}"
                                          id="orderButton" ajax="false"
-                                         disabled="#{orderPizza.order.orderEntriesAsCollection.isEmpty()}"/>
+                                         disabled="#{!orderPizza.orderIsValid()}"/>
                     </h:form>
                 </ui:define>
             </ui:composition>
